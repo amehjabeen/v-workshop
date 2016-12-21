@@ -21,3 +21,8 @@ npm run dev
 npm run build
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## Helpful links
+* [Vue docs](https://vuejs.org/v2/guide/)
+** [form input handling](https://vuejs.org/v2/guide/forms.html)
+* [Vuex docs](https://github.com/vuejs/vuex/tree/1.0/docs/en)
