@@ -1,6 +1,12 @@
 # v-workshop
 
-> A Vue.js project
+> A light introduction to VueJS and Vuex
+
+## Steps to getting started
+1. [Follow the steps here to set up node and npm](https://github.com/procured/ph/wiki/Front-end-environment-workflow)
+2. Install the VueJS devtools, found [here](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en)
+3. If using Pycharm, install VueJS for Pycharm for syntax highlighting, turn on ES6 in Pycharm (Preferences -> Languages & Frameworks -> Javascript)
+4. See build setup below.
 
 ## Build Setup
 
@@ -13,12 +19,5 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
-```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
