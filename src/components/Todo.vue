@@ -3,7 +3,7 @@
         <div class="list-wrapper">
             <div class="new-item-wrapper">
                 <h3>Add a todo</h3>
-                <input class="new-item" type="text" v-model="newItem" @keyup.enter="addTodo" ref="newItem">
+                <input class="new-item" type="text" v-model="newItem" @keyup.enter="addTodo(newItem)" ref="newItem">
             </div>
             <todo-list
                 :todos=activeTodos
@@ -32,6 +32,8 @@
 import TodoList from './TodoList';
 import { formatDate } from '../filters/filters';
 
+import { addTodo } from '../vuex/actions';
+
 export default {
     components: {
         TodoList
@@ -39,41 +41,19 @@ export default {
     data: function() {
         return {
             newItem: '',
-            todos: [
-                {
-                    text: 'Add focus functionality on page load',
-                    due: new Date('10-10-2016'),
-                    id: 1,
-                    starred: false,
-                    finished: false
-                },
-                {
-                    text: 'Add ability to click on items to complete them (or move them back into in-progress)',
-                    due: new Date('09-10-2016'),
-                    id: 2,
-                    starred: true,
-                    finished: false
-                },
-                {
-                    text: 'Add ability to click and sort by date',
-                    due: new Date('12-15-2016'),
-                    id: 3,
-                    starred: true,
-                    finished: false
-                },
-                {
-                    text: 'Add filtering by text and starred status',
-                    due: new Date('12-25-2016'),
-                    id: 4,
-                    starred: true,
-                    finished: false
-                }
-            ],
             filters: {
                 text: '',
                 starred: false
             },
             activeFilters: []
+        }
+    },
+    vuex: {
+        getters: {
+            todos: ({ todolist }) => todolist.todos
+        },
+        actions: {
+            addTodo
         }
     },
     computed: {
@@ -95,16 +75,6 @@ export default {
     methods: {
         toggleTodoState: function(todo) {
             todo.finished = !todo.finished;
-        },
-        addTodo: function(event) {
-            this.todos.push({
-                id: Math.max.apply(null, this.allIds) + 1,
-                text: this.newItem,
-                due: new Date(),
-                starred: false
-            });
-            this.newItem = '';
-            this.focusInput();
         },
         focusInput: function() {
             this.$refs.newItem.focus();
