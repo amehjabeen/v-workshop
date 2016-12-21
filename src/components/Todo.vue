@@ -3,7 +3,7 @@
         <div class="list-wrapper">
             <div class="new-item-wrapper">
                 <h3>Add a todo</h3>
-                <input class="new-item" type="text" v-model="newItem" @keyup.enter="addTodo(newItem)" ref="newItem">
+                <input class="new-item" type="text" :value="newItem" @input="updateNewTodo($event.target.value)" @keyup.enter="addTodo(newItem)" ref="newItem">
             </div>
             <todo-list
                 :todos=activeTodos
@@ -32,7 +32,7 @@
 import TodoList from './TodoList';
 import { formatDate } from '../filters/filters';
 
-import { addTodo , toggleTodoState } from '../vuex/actions';
+import { addTodo , toggleTodoState , updateNewTodo } from '../vuex/actions';
 
 export default {
     components: {
@@ -40,7 +40,6 @@ export default {
     },
     data: function() {
         return {
-            newItem: '',
             filters: {
                 text: '',
                 starred: false
@@ -50,11 +49,13 @@ export default {
     },
     vuex: {
         getters: {
-            todos: ({ todolist }) => todolist.todos
+            todos: ({ todolist }) => todolist.todos,
+            newItem: ({ todolist }) => todolist.newItem
         },
         actions: {
             addTodo,
-            toggleTodoState
+            toggleTodoState,
+            updateNewTodo
         }
     },
     computed: {

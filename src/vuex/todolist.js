@@ -3,7 +3,8 @@ import * as types from './mutation-types';
 const state = {
     todos: [],
     filters: [],
-    activeFilters: []
+    activeFilters: [],
+    newItem: ''
 };
 
 const mutations = {
@@ -17,10 +18,14 @@ const mutations = {
             finished: false
         };
         state.todos.push(newTodo);
+        state.newItem = '';
     },
     [types.TODO_STATE_TOGGLED]: function(state, toggled) {
         const toggledTodo = state.todos.find(todo => todo.id === toggled.id);
         toggledTodo.finished = !toggledTodo.finished;
+    },
+    [types.NEW_TODO_UPDATED]: function(state, text) {
+        state.newItem = text;
     }
 };
 
