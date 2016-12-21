@@ -4,79 +4,82 @@
             <h3>Add a todo</h3>
             <input class="new-item" type="text" v-model="newItem" @keyup.enter="addTodo" ref="newItem">
         </div>
-        <ul class="todo-list">
-            <h3>Unfinished Todos</h3>
-            <div v-if="hasUnfinishedTodos" class="unfinished">
-                <div class="headers">
-                    <h5 class="todo-header">Item</h5><h5 class="date-header">Due</h5>
-                </div>
-                <li v-for="todo in todoList">
-                    <span class="todo-text">{{ todo.text }}</span><span class="due-date">{{ getFormattedDate(todo.due) }}</span>
-                </li>
-            </div>
-            <span v-else>All done!</span>
-        </ul>
-        <ul class="finished-todo-list">
-            <h3>Finished todos</h3>
-            <div class="finished" v-if="hasFinishedTodos">
-                <div class="headers">
-                    <h5 class="todo-header">Item</h5><h5 class="date-header">Due</h5>
-                </div>
-                <li v-for="todo in finishedTodos">
-                    <span class="todo-text">{{ todo.text }}</span><span class="due-date">{{ getFormattedDate(todo.due) }}</span>
-                </li>
-            </div>
-            <span v-else>Oh dear, better get a move on!</span>
-        </ul>
+        <todo-list
+            :todos=activeTodos
+            title="Active todos"
+            @toggled="toggleTodoState"
+        ></todo-list>
+        <todo-list
+            class="finished-todo-list"
+            title="Finished todos"
+            :todos=finishedTodos
+            @toggled="toggleTodoState"
+        ></todo-list>
     </div>
 </template>
 
 <script>
+import TodoList from './TodoList';
 import { formatDate } from '../filters/filters';
 
 export default {
+    components: {
+        TodoList
+    },
     data: function() {
         return {
             newItem: '',
-            finishedTodos: [],
-            todoList: [
+            todos: [
                 {
                     text: 'Add focus functionality on page load',
                     due: new Date('10-10-2016'),
                     id: 1,
-                    starred: false
+                    starred: false,
+                    finished: false
                 },
                 {
                     text: 'Add ability to click on items to complete them (or move them back into in-progress)',
                     due: new Date('09-10-2016'),
                     id: 2,
-                    starred: true
+                    starred: true,
+                    finished: false
                 },
                 {
                     text: 'Add ability to click and sort by date',
                     due: new Date('12-15-2016'),
                     id: 3,
-                    starred: true
+                    starred: true,
+                    finished: false
                 },
                 {
                     text: 'Add filtering by text and starred status',
                     due: new Date('12-25-2016'),
                     id: 4,
-                    starred: true
+                    starred: true,
+                    finished: false
                 }
             ]
         }
     },
     computed: {
-        hasUnfinishedTodos() { return Boolean(this.todoList.length); },
+        activeTodos() {
+            return this.todos.filter(todo => Boolean(!todo.finished));
+        },
+        finishedTodos() {
+            return this.todos.filter(todo => Boolean(todo.finished));
+        },
+        hasUnfinishedTodos() { return Boolean(this.activeTodos.length); },
         hasFinishedTodos() { return Boolean(this.finishedTodos.length); },
         allIds() {
-            return this.todoList.concat(this.finishedTodos).map(todo => todo.id);
+            return this.activeTodos.concat(this.finishedTodos).map(todo => todo.id);
         }
     },
     methods: {
+        toggleTodoState: function(todo) {
+            todo.finished = !todo.finished;
+        },
         addTodo: function(event) {
-            this.todoList.push({
+            this.todos.push({
                 id: Math.max.apply(null, this.allIds) + 1,
                 text: this.newItem,
                 due: new Date(),
@@ -87,15 +90,12 @@ export default {
         },
         focusInput: function() {
             this.$refs.newItem.focus();
-        },
-        getFormattedDate(dueDate) {
-            return formatDate(dueDate);
         }
     },
     mounted: function() {
         // put any initialization code here. if function requires dom nodes to
         // exist, wait for dom update using this.$nextTick
-        this.$nextTick( /* function... */)
+        this.$nextTick(this.focusInput)
     }
 }
 </script>
@@ -131,41 +131,6 @@ export default {
         input {
             height: 20px;
             font-size: 1em;
-        }
-    }
-    .todo-list,
-    .finished-todo-list {
-        list-style-type: none;
-        border: 1px solid #ccc;
-        order: 2;
-        padding: 10px;
-        text-align: left;
-
-        h3 {
-            margin: 0 0 10px 0;
-        }
-        li {
-            padding: 5px 0;
-            cursor: pointer;
-            display: flex;
-            flex: 1 100%;
-        }
-    }
-    .headers {
-        display: flex;
-    }
-    .todo-text,
-    .todo-header {
-        flex: 2 75%;
-    }
-    .due-date,
-    .date-header {
-        flex: 1 25%;
-        padding-left: 5px;
-    }
-    .finished-todo-list {
-        li {
-            text-decoration: line-through;
         }
     }
 </style>
