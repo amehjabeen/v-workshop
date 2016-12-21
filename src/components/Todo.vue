@@ -32,7 +32,7 @@
 import TodoList from './TodoList';
 import { formatDate } from '../filters/filters';
 
-import { addTodo } from '../vuex/actions';
+import { addTodo , toggleTodoState } from '../vuex/actions';
 
 export default {
     components: {
@@ -53,7 +53,8 @@ export default {
             todos: ({ todolist }) => todolist.todos
         },
         actions: {
-            addTodo
+            addTodo,
+            toggleTodoState
         }
     },
     computed: {
@@ -73,9 +74,6 @@ export default {
         }
     },
     methods: {
-        toggleTodoState: function(todo) {
-            todo.finished = !todo.finished;
-        },
         focusInput: function() {
             this.$refs.newItem.focus();
         },

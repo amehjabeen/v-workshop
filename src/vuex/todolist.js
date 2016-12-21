@@ -19,7 +19,8 @@ const mutations = {
         state.todos.push(newTodo);
     },
     [types.TODO_STATE_TOGGLED]: function(state, toggled) {
-        // toggle code here
+        const toggledTodo = state.todos.find(todo => todo.id === toggled.id);
+        toggledTodo.finished = !toggledTodo.finished;
     }
 };
 
