@@ -103,7 +103,13 @@ export default {
             margin: 0 0 10px 0;
         }
         li {
-            padding-left: 0;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+    }
+    .finished-todo-list {
+        li {
+            text-decoration: line-through;
         }
     }
 </style>
