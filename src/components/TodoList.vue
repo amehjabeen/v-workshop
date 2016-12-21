@@ -7,7 +7,8 @@
                 <h5 class="date-header" @click="applySort('due')">Due <span class="sort-indicator" v-show="isSortActive('due')">sorted</span></h5>
             </div>
             <li v-for="todo in getSortedTodos(todos)" @click="$emit('toggled', todo)">
-                <span class="todo-text">{{ todo.text }}</span><span class="due-date">{{ getFormattedDate(todo.due) }}</span>
+                <span class="todo-text">{{ todo.text }} <label v-if="todo.starred" class="label-starred">important</label></span>
+                <span class="due-date">{{ getFormattedDate(todo.due) }}</span>
             </li>
         </div>
         <span v-else>All done!</span>
@@ -16,6 +17,7 @@
 
 <script>
 import { formatDate } from '../filters/filters';
+import _ from 'lodash';
 
 export default {
     props: {
@@ -111,6 +113,13 @@ export default {
         padding: 2px;
         background-color: blue;
         color: #fff;
+    }
+    .label-starred {
+        font-size: 10px;
+        padding: 2px;
+        background-color: red;
+        color: #fff;
+        font-weight: bold;
     }
     .finished-todo-list {
         li {
